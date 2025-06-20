@@ -94,14 +94,15 @@
 
   <script>
     class User {
-      constructor(email, address, name) {
+      constructor(email, address, name, gender) {
         this.email = email;
         this.address = address;
         this.name = name;
+        this.gender = gender;
       }
 
       show() {
-        console.log(this)
+        console.log(this);
         document.getElementById("tableBody").innerHTML = "<tr><th>" + this.name + "</th><td>" + this.email + "</td><td>" + this.address + "</td></tr>";
       }
     }
