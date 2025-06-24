@@ -52,7 +52,7 @@
         // console.log(data);
 
         // ordenar o array por id:
-        data.sort(function (a, b) { return a.id - b.id });
+        data.sort((a, b) => a.id - b.id );
 
         // console.log(data);
 
@@ -71,6 +71,7 @@
 for (let i = 0; i < uniqueData.length; i++) {
     uniqueDataString += `${uniqueData[i].id}: ${uniqueData[i].name}<br>`;
 }
+
 
         document.getElementById("result").innerHTML = uniqueDataString;
 
