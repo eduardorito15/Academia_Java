@@ -38,11 +38,15 @@
                 <h2 class="text-center">Criar Pedido</h2>
                 <form id="createOrderForm">
                     <!-- nome cliente form -->
-                    <div class="mb-3">
-                        <label for="customerName" class="form-label">Nome do Cliente</label>
-                        <input type="text" class="form-control" id="customerName" name="customerName"
-                            aria-describedby="nameHelp" required>
-                        <div id="nameHelp" class="form-text">Introduza o seu nome.</div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="customerName" class="form-label col-3">Nome do Cliente</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control" id="userName" name="customerName"
+                                    aria-describedby="nameHelp" required>
+                                <div id="nameHelp" class="form-text">Introduza o seu nome.</div>
+                            </div>
+                        </div>
                     </div>
                     <!-- select produtos form -->
                     <div class="mb-3">
@@ -56,30 +60,33 @@
                         <label id="productExtra" class="form-label">Adicionar Extras</label>
                     </div>
                     <!-- select acompanhamentos form -->
-<div class="mb-3">
+                    <div class="mb-3">
                         <label for="sidedishSelect" class="form-label">Escolha o acompanhamento</label>
                         <select class="form-select" id="sidedishSelect" name="sidedishSelect" required>
                             <option>Nenhum</option>
                         </select>
                     </div>
-<div class="mb-3">
-                        <div id="sidedishExtraHelp" class="form-text">Selecione extras opcionais para o seu acompanhamento.</div>
+                    <div class="mb-3">
+                        <div id="sidedishExtraHelp" class="form-text">Selecione extras opcionais para o seu
+                            acompanhamento.</div>
                         <label id="sidedishExtra" class="form-label">Adicionar Extras para o acompanhamento</label>
                     </div>
                     <!-- select bebidas form -->
-<div class="mb-3">
+                    <div class="mb-3">
                         <label for="beverageSelect" class="form-label">Escolha a bebida</label>
                         <select class="form-select" id="beverageSelect" name="beverageSelect" required>
                             <option>Nenhuma</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <div id="beverageExtraHelp" class="form-text">Selecione extras opcionais para a sua bebida.</div>
+                        <div id="beverageExtraHelp" class="form-text">Selecione extras opcionais para a sua bebida.
+                        </div>
                         <label id="beverageExtra" class="form-label">Adicionar Extras para a bebida</label>
                     </div>
 
                     <!-- botão para finalizar pedido -->
-                    <button id="createOrderBTN" type="button" class="btn btn-primary">Finalizar Pedido</button>
+                    <button id="createOrderBTN" type="button" class="btn btn-primary">Finalizar
+                        Pedido</button>
                 </form>
             </div>
 
@@ -179,7 +186,7 @@
             });
 
             // adiciona checkboxes com os extras para a bebida
-                        productExtraBebidasList.forEach(extra => {
+            productExtraBebidasList.forEach(extra => {
                 const checkbox = document.createElement('input');
                 checkbox.value = extra;
                 checkbox.type = 'checkbox';
@@ -198,27 +205,35 @@
                 div.appendChild(checkbox);
                 beverageExtra.after(div);
             });
-
-            // Evento de submit do formulário
-            createOrderForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-                const customerName = document.getElementById('customerName').value;
-                const productId = productSelect.value;
-
-                // Cria o pedido
-                DatabaseService.createOrder(customerName, productId)
-                    .then(() => {
-                        alert('Pedido criado com sucesso!');
-                        createOrderForm.reset();
-                    })
-                    .catch(error => {
-                        console.error('Erro ao criar pedido:', error);
-                        alert('Erro ao criar pedido. Tente novamente.');
-                    });
-            });
         });
 
-        
+        // evento para o botão de finalizar pedido
+        const createOrderBTN = document.getElementById('createOrderBTN');
+        createOrderBTN.addEventListener('click', function () {
+            const selectedProducts = [];
+            selectedProducts.push({
+                product: document.getElementById('productSelect').value,
+                extras: Array.from(document.querySelectorAll('input[name="productExtra"]:checked')).map(checkbox => checkbox.value)
+            });
+            selectedProducts.push({
+                product: document.getElementById('sidedishSelect').value,
+                extras: Array.from(document.querySelectorAll('input[name="sidedishExtra"]:checked')).map(checkbox => checkbox.value)
+            });
+            selectedProducts.push({
+                product: document.getElementById('beverageSelect').value,
+                extras: Array.from(document.querySelectorAll('input[name="beverageExtra"]:checked')).map(checkbox => checkbox.value)
+            });
+            // add user and products to order
+            const user = document.getElementById('userName').value;
+            newUser = new User(user); 
+            const order = new Order();
+            order.userId = newUser.id;
+            order.products = selectedProducts;
+            order.createOrder();
+            const form = document.getElementById('createOrderForm');
+            form.insertAdjacentHTML('afterend', `<div class="alert alert-success mt-3" role="alert">Pedido criado com sucesso!</div>`);
+        });
+
     </script>
 
 </body>

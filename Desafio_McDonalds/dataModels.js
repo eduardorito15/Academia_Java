@@ -1,7 +1,16 @@
+class User {
+    constructor(name) {
+        this.name = name;
+        this.id = new Date().getTime();
+        usersData.push(this);
+    }
+
+}
+
 class Order {
     constructor() {
         this.id = undefined;
-        this.requesterName = name;
+        this.userId = 0;
         this.products = [];
     }
 
@@ -12,28 +21,16 @@ class Order {
     createOrder() {
         this.id = new Date().getTime();
         // save in DB
+        ordersData.push(this);
     }
 }
 
 class Product {
-    constructor(product, productExtra, sidedish, sidedishExtra, beverage, beverageExtra) {
-        this.product = product;
-        this.productExtra = productExtra;
-        this.sidedish = sidedish;
-        this.sidedishExtra = sidedishExtra;
-        this.beverage = beverage;
-        this.beverageExtra = beverageExtra;
-        }
-
-    getProduct() {        return {
-            product: this.product,
-            productExtra: this.productExtra,
-            sidedish: this.sidedish,
-            sidedishExtra: this.sidedishExtra,
-            beverage: this.beverage,
-            beverageExtra: this.beverageExtra
-        };
+    constructor(name, extra) {
+        this.name = name;
+        this.extra = extra;
     }
-
-    
 }
+
+const usersData = [];
+const ordersData = [];
