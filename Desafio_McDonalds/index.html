@@ -88,6 +88,18 @@
                     <button id="createOrderBTN" type="button" class="btn btn-primary">Finalizar
                         Pedido</button>
                 </form>
+                <!-- Tabela para exibir pedido efetuado -->
+                <table id="orderTable" class="table table-striped mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">Produto</th>
+                            <th scope="col">Extras</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <!-- Os pedidos serão adicionados aqui -->
+                    </tbody>
+                </table>
             </div>
 
             <!-- Tab para remover pedido -->
@@ -231,9 +243,10 @@
             order.products = selectedProducts;
             order.createOrder();
             const form = document.getElementById('createOrderForm');
-            form.insertAdjacentHTML('afterend', `<div class="alert alert-success mt-3" role="alert">Pedido criado com sucesso!</div>`);
-        });
-
+            form.insertAdjacentHTML('afterend', `<div id="orderCreatedAlert" class="alert alert-success mt-3" role="alert">Pedido criado com sucesso!</div>`);
+            // add info to table
+            });
+            
     </script>
 
 </body>
