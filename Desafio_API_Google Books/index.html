@@ -12,80 +12,165 @@
 <body>
   <div class="container mt-5">
     <h1 class="text-center mb-4">Desafio API Google Books</h1>
-    <div id="bookDisplay"></div>
-    <div id="controlsLike" class="text-center">
-      <button id="btnLike" class="btn btn-primary">👍 Gosto</button>
-      <button id="btnDislike" class="btn btn-danger">👎 Não gosto</button>
+    <div class="row mb-3">
+      <div class="col-md-6 offset-md-3">
+        <div class="input-group">
+          <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar livros...">
+          <button class="btn btn-primary" id="btnSearch" onclick="searchBooks()">Pesquisar</button>
+        </div>
+      </div>
+      <div id="searchResults" style="display: none">
+        <h2 class="text-center mb-4">Resultados da Pesquisa</h2>
+        <div id="bookDisplay"></div>
+        <div id="controlsLike" class="text-center">
+          <button id="btnLike" class="btn btn-primary">👍 Gosto</button>
+          <button id="btnDislike" class="btn btn-danger">👎 Não gosto</button>
+        </div>
+        <button id="btnFinish" class="btn btn-success text-center" onclick="finishPresentation()">Terminar</button>
+      </div>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
-    crossorigin="anonymous"></script>
-  <script src="dataModels.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+      crossorigin="anonymous"></script>
+    <script src="dataModels.js"></script>
 
-  <script>
-    // inicializar variáveis
-    let queryIndex = 0;
-    const books = [];
+    <script>
+      // inicializar variáveis
+      let searchTerm = '';
+      let queryIndex = 0;
+      let books = [];
+      let booksLike = [];
 
-    // get books from Google Books API and create book elements through Book class
-    async function getBooksFromGoogle(search) {
-      const url = `https://www.googleapis.com/books/v1/volumes?q=${search}&startIndex=${queryIndex}`;
-      const response = await fetch(url);
-      queryIndex += 10;
-      // console.log(response);
-      if (response.ok) {
-        const dataFromGoogle = await response.json();
-        return dataFromGoogle.items.map(item => new Book(
-          item.id,
-          item.volumeInfo.title,
-          item.volumeInfo.authors,
-          item.volumeInfo.publisher,
-          item.volumeInfo.publishedDate,
-          item.volumeInfo.description,
-          item.volumeInfo.pageCount,
-          item.volumeInfo.categories,
-          item.volumeInfo.imageLinks?.thumbnail,
-          item.volumeInfo.language,
-          item.volumeInfo.infoLink
-        ));
+      // get books from Google Books API and create book elements through Book class
+      async function getBooksFromGoogle(search) {
+        const url = `https://www.googleapis.com/books/v1/volumes?q=${search}&startIndex=${queryIndex}`;
+        const response = await fetch(url);
+        queryIndex += 10;
+        // console.log(response);
+        if (response.ok) {
+          const dataFromGoogle = await response.json();
+          return dataFromGoogle.items.map(item => new Book(
+            item.id,
+            item.volumeInfo.title,
+            item.volumeInfo.authors,
+            item.volumeInfo.publisher,
+            item.volumeInfo.publishedDate,
+            item.volumeInfo.description,
+            item.volumeInfo.pageCount,
+            item.volumeInfo.categories,
+            item.volumeInfo.imageLinks?.thumbnail,
+            item.volumeInfo.language,
+            item.volumeInfo.infoLink
+          ));
+        }
       }
-    }
 
+      // pesquisar livros
+      function searchBooks() {
+        if (books.length > 0) {
+          books = []; // Limpar livros anteriores
+        }
+        queryIndex = 0; // Reiniciar o índice da pesquisa
+        currentIndex = 0; // Reiniciar o índice de exibição
+        searchTerm = document.getElementById('searchInput').value.trim();
+        if (searchTerm === '') {
+          alert('Por favor, insira um termo de pesquisa.');
+          return;
+        }
+        document.getElementById('searchResults').style.display = 'block'; // Mostrar resultados da pesquisa
+        mostrarLivros(currentIndex); // Mostrar o primeiro livro
+      }
 
-    // apresentar os livros
-    let currentIndex = 0;
-    async function mostrarLivros(index) {
-      // console.log(books);
-      const bookDisplay = document.getElementById('bookDisplay');
-      bookDisplay.innerHTML = ''; // Limpa o conteúdo anterior
-      if (index >= books.length - 2 || index === 0) {
-        // console.log('Fui buscar mais livros');
-        const newBooks = await getBooksFromGoogle('JavaScript');
-        newBooks.forEach((e) => {
-          books.push(e);
+      // apresentar os livros
+      let currentIndex = 0;
+      async function mostrarLivros(index) {
+        // console.log(books);
+        const bookDisplay = document.getElementById('bookDisplay');
+        bookDisplay.innerHTML = ''; // Limpa o conteúdo anterior
+        if (index >= books.length - 2 || index === 0) {
+          // console.log('Fui buscar mais livros');
+          const newBooks = await getBooksFromGoogle(searchTerm);
+          newBooks.forEach((e) => {
+            books.push(e);
+          });
+        }
+        const bookElement = books[index].render();
+        bookDisplay.appendChild(bookElement);
+      }
+
+      // comportamento dos botões
+      document.getElementById('btnLike').addEventListener('click', () => {
+        addToBookLike(currentIndex);
+        currentIndex++;
+        mostrarLivros(currentIndex);
+      });
+      document.getElementById('btnDislike').addEventListener('click', () => {
+        // TODO: guardar em livros que não gosta
+        currentIndex++;
+        mostrarLivros(currentIndex);
+      });
+
+      /*       // Iniciar a exibição dos livros
+            mostrarLivros(currentIndex);
+       */
+
+      // função para adicionar livro aos livros que gosta
+      function addToBookLike(index) {
+        const book = books[index];
+        const bookLike = new BookLike(book.id, book.title, book.authors, book.publisher, book.publishedDate, book.description, book.pageCount, book.categories, book.thumbnail, book.language, book.infoLink);
+        booksLike.push(bookLike);
+      }
+
+      // Função para terminar a exibição
+      function finishPresentation() {
+        const results = document.getElementById('searchResults');
+        results.style.display = 'none'; // Esconde os resultados da pesquisa
+        // Mostrar livros que gostou
+        const likedBooksDisplay = document.createElement('div');
+        likedBooksDisplay.className = 'row mb-3';
+        likedBooksDisplay.id = 'likedBooksDisplay';
+        likedBooksDisplay.innerHTML = '<h3 class="text-center">Livros que gostou:</h3>';
+        booksLike.forEach(book => {
+          const authors = Array.isArray(book.authors) ? book.authors.join(', ') : book.authors;
+          const categories = Array.isArray(book.categories) ? book.categories.join(', ') : book.categories;
+          likedBooksDisplay.insertAdjacentHTML('beforeend', `
+        <div class="col-4 mb-3">
+        <div class="card rounded">
+        <div class="card-body">
+        <img src="${book.thumbnail}" class="card-img-top img-fluid" alt="${book.title}">
+        <h5 class="card-title">${book.title}</h5>
+        <p class="card-text">Autores: ${authors}</p>
+        <p class="card-text">Editora: ${book.publisher}</p>
+        <p class="card-text">Publicado em: ${book.publishedDate}</p>
+        <p class="card-text">Páginas: ${book.pageCount}</p>
+        <p class="card-text">Categorias: ${categories}</p>
+        <p class="card-text">Idioma: ${book.language}</p>
+        <a href="${book.infoLink}" class="btn btn-primary" target="_blank">Mais informações</a>
+        </div>
+        </div>
+        </div>
+        `);
         });
+        results.insertAdjacentElement('afterend', likedBooksDisplay);
+        // Adicionar botão para reiniciar a apresentação
+        likedBooksDisplay.insertAdjacentHTML('afterend', `
+      <button class="btn btn-secondary mt-3 text-center" id="btnRestart" onclick="restartPresentation()">Recomeçar</button>
+      `);
       }
-      const bookElement = books[index].render();
-      bookDisplay.appendChild(bookElement);
-    }
 
-    // comportamento dos botões
-    document.getElementById('btnLike').addEventListener('click', () => {
-      // TODO: guardar em livros que gosta
-      currentIndex++;
-      mostrarLivros(currentIndex);
-    });
-    document.getElementById('btnDislike').addEventListener('click', () => {
-      // TODO: guardar em livros que não gosta
-      currentIndex++;
-      mostrarLivros(currentIndex);
-    });
-
-    // Iniciar a exibição dos livros
-    mostrarLivros(currentIndex);
-
-  </script>
+      // Recomeçar
+      function restartPresentation() {
+        document.getElementById('btnRestart').remove();
+        queryIndex = 0;
+        currentIndex = 0;
+        books = [];
+        booksLike = [];
+        document.getElementById('searchResults').style.display = 'none';
+        document.getElementById('likedBooksDisplay').style.display = 'none';
+        document.getElementById('searchInput').value = '';
+        mostrarLivros(currentIndex);
+      }
+    </script>
 </body>
 
 </html>
