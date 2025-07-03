@@ -29,6 +29,24 @@
         <button id="btnFinish" class="btn btn-success text-center" onclick="finishPresentation()">Terminar</button>
       </div>
     </div>
+
+    <!-- Modal para remover livros de que gosta -->
+    <div class="modal fade" id="removeBookModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Remover Livro</h5>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza de que deseja remover este livro dos que gosta?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="confirmRemoveButton" onclick="removeFromLikedBooks(bookIndexToRemove)" data-bs-dismiss="modal">Remover</button>
+          </div>
+        </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
       crossorigin="anonymous"></script>
@@ -40,6 +58,7 @@
       let queryIndex = 0;
       let books = [];
       let booksLike = [];
+      let bookIndexToRemove = -1; // Variável para armazenar o índice do livro a ser removido
 
       // get books from Google Books API and create book elements through Book class
       async function getBooksFromGoogle(search) {
@@ -96,6 +115,10 @@
         }
         const bookElement = books[index].render();
         bookDisplay.appendChild(bookElement);
+        title = document.getElementById('bookTitle');
+        if (title) {
+          title.focus();
+        }
       }
 
       // comportamento dos botões
@@ -130,6 +153,7 @@
         likedBooksDisplay.className = 'row mb-3';
         likedBooksDisplay.id = 'likedBooksDisplay';
         likedBooksDisplay.innerHTML = '<h3 class="text-center">Livros que gostou:</h3>';
+        likedBooksDisplay.tabIndex = -1;
         booksLike.forEach(book => {
           const authors = Array.isArray(book.authors) ? book.authors.join(', ') : book.authors;
           const categories = Array.isArray(book.categories) ? book.categories.join(', ') : book.categories;
@@ -145,17 +169,57 @@
         <p class="card-text">Páginas: ${book.pageCount}</p>
         <p class="card-text">Categorias: ${categories}</p>
         <p class="card-text">Idioma: ${book.language}</p>
+        <div class="card-footer text-center">
         <a href="${book.infoLink}" class="btn btn-primary" target="_blank">Mais informações</a>
+        <button id="btnRemove${book.id}" class="btn btn-danger" onclick="removeFromLikedBooksModal(${booksLike.indexOf(book)})">Remover</button>
+        </div>
         </div>
         </div>
         </div>
         `);
         });
         results.insertAdjacentElement('afterend', likedBooksDisplay);
-        // Adicionar botão para reiniciar a apresentação
+
+ // Adicionar botão para reiniciar a apresentação
         likedBooksDisplay.insertAdjacentHTML('afterend', `
-      <button class="btn btn-secondary mt-3 text-center" id="btnRestart" onclick="restartPresentation()">Recomeçar</button>
-      `);
+          <button class="btn btn-secondary mt-3 text-center" id="btnRestart" onclick="restartPresentation()">Recomeçar</button>`);
+      }
+
+      // Função para abrir o modal de remoção
+      function removeFromLikedBooksModal(index) {
+        bookIndexToRemove = index; // Armazenar o índice do livro a ser removido
+        const removeBookModal = new bootstrap.Modal(document.getElementById('removeBookModal'));
+        removeBookModal.show();
+      }
+
+      // Função para remover livro dos livros que gostou
+      function removeFromLikedBooks(index) {
+        booksLike.splice(index, 1);
+        const likedBooksDisplay = document.getElementById('likedBooksDisplay');
+        likedBooksDisplay.innerHTML = '<h3 class="text-center">Livros que gostou:</h3>';
+        booksLike.forEach(book => {
+          const authors = Array.isArray(book.authors) ? book.authors.join(', ') : book.authors;
+          const categories = Array.isArray(book.categories) ? book.categories.join(', ') : book.categories;
+          likedBooksDisplay.insertAdjacentHTML('beforeend', `
+            <div class="col-4 mb-3">
+              <div class="card rounded">
+                <div class="card-body">
+                  <img src="${book.thumbnail}" class="card-img-top img-fluid" alt="${book.title}">
+                    <h5 class="card-title">${book.title}</h5>
+                    <p class="card-text">Autores: ${authors}</p>
+                    <p class="card-text">Editora: ${book.publisher}</p>
+                    <p class="card-text">Publicado em: ${book.publishedDate}</p>
+                    <p class="card-text">Páginas: ${book.pageCount}</p>
+                    <p class="card-text">Categorias: ${categories}</p>
+                    <p class="card-text">Idioma: ${book.language}</p>
+                    <div class="card-footer text-center">
+                      <a href="${book.infoLink}" class="btn btn-primary" target="_blank">Mais informações</a>
+                      <button class="btn btn-danger" onclick="removeFromLikedBooks(${booksLike.indexOf(book)})">Remover</button>
+                    </div>
+                </div>
+              </div>
+        </div>`);
+        });
       }
 
       // Recomeçar

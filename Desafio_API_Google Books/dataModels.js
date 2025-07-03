@@ -14,13 +14,13 @@ class Book {
     }
 
     render() {
-        const authors = Array.isArray(this.authors) ? this.authors.join(', ') : this.authors === undefined ? 'N/A' : this.authors;
-        const categories = Array.isArray(this.categories) ? this.categories.join(', ') : this.categories === undefined ? 'N/A' : this.categories;
+        const authors = Array.isArray(this.authors) ? this.authors.join(', ') : this.authors === undefined ? 'N/A' : this.authors; // garante a exibição correta do conteúdo no caso de ser um array ou undefined
+        const categories = Array.isArray(this.categories) ? this.categories.join(', ') : this.categories === undefined ? 'N/A' : this.categories; // garante a exibição correta do conteúdo no caso de ser um array ou undefined
         const bookElement = document.createElement('div');
         bookElement.className = 'mb-3';
         bookElement.ariaLabel = this.title;
         bookElement.innerHTML = `
-        <h2>${this.title}</h2>
+        <h2 id="bookTitle" tabindex="-1">${this.title}</h2>
         <p><strong>Autores:</strong> ${authors}</p>
             <p><strong>Editora:</strong> ${this.publisher}</p>
             <p><strong>Data de publicação:</strong> ${this.publishedDate}</p>
