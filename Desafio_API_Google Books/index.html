@@ -15,7 +15,7 @@
     <div class="row mb-3">
       <div class="col-md-6 offset-md-3">
         <div class="input-group">
-          <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar livros...">
+          <input type="text" class="form-control" id="searchInput" onkeyup="handleKeyUp(event)" placeholder="Pesquisar livros...">
           <button class="btn btn-primary" id="btnSearch" onclick="searchBooks()">Pesquisar</button>
         </div>
       </div>
@@ -98,6 +98,13 @@
         }
         document.getElementById('searchResults').style.display = 'block'; // Mostrar resultados da pesquisa
         mostrarLivros(currentIndex); // Mostrar o primeiro livro
+      }
+
+      // Função para despultar a pesquisa ao pressionar Enter
+      function handleKeyUp(event) {
+        if (event.key === 'Enter') {
+          searchBooks(); // Chamar a função de pesquisa quando a tecla Enter for pressionada
+        }
       }
 
       // apresentar os livros
@@ -214,7 +221,7 @@
                     <p class="card-text">Idioma: ${book.language}</p>
                     <div class="card-footer text-center">
                       <a href="${book.infoLink}" class="btn btn-primary" target="_blank">Mais informações</a>
-                      <button class="btn btn-danger" onclick="removeFromLikedBooks(${booksLike.indexOf(book)})">Remover</button>
+                      <button class="btn btn-danger" onclick="removeFromLikedBooksModal(${booksLike.indexOf(book)})">Remover</button>
                     </div>
                 </div>
               </div>
