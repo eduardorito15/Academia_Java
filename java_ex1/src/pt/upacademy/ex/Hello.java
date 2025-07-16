@@ -1,24 +1,45 @@
 package pt.upacademy.ex;
 
-import java.time.Year;
 import java.util.Scanner;
 
 public class Hello {
+	private Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("Olá! Como te chamas?");
-		Scanner scanner = new Scanner(System.in);
-		String name = scanner.nextLine();
-		System.out.println("Hello, " + name + "! Qual é a tua idade?");
-		String ageStr = scanner.nextLine();
-		int age = Integer.parseInt(ageStr);
-		System.out.println("Muito bem, " + name + ", tu tens " + age + " anos!");
-		scanner.close();
-		int year = Year.now().getValue();
-		int yearBorn = year - age;
-		System.out.println("Nasceste em " + yearBorn);
-		}
-
+		Hello helloWorld = new Hello();
+		helloWorld.run();
+		
 	}
 
+	private String getName() {
+		String name = scanner.nextLine();
+		return name;
+	}
+
+	private int getAge() {
+		if (scanner.hasNextInt()) {
+			int age = scanner.nextInt();
+			return age;
+		}
+		scanner.nextLine();
+		return -1;
+	}
+
+	private void run() {
+		System.out.println("Hello World, what's your name?");
+		String userName = getName();
+		System.out.println("Hello " + userName + "!");
+		System.out.println("And what's your age?");
+		int userAge = getAge();
+		while (userAge == -1) {
+			System.out.println("That's not a valid age, try again!");
+			userAge = getAge();
+		}
+		User user = new User();
+		user.setName(userName);
+		user.setAge(userAge);
+		System.out.println("I've created a new user called " + user.getName() + ", who is " + user.getAge() + " years old.");
+		scanner.close();
+		System.out.println(user.toString());
+	}
+}
