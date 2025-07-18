@@ -1,10 +1,8 @@
 package io.altar.jseproject.model;
 
-public class Shelf {
-	private static int countId;
-	private int shelfId;
+public class Shelf extends Entity_ {
 	private int shelfCapacity;
-	private int productId;
+	private int productId = -1;
 	private double dailyLocationRentalPrice;
 
 	public Shelf() {
@@ -12,14 +10,8 @@ public class Shelf {
 	}
 
 	public Shelf(int productId, int shelfCapacity, double dailyLocationRentalPrice) {
-		this.shelfId = this.countId++;
-		this.productId = productId;
 		this.shelfCapacity = shelfCapacity;
 		this.dailyLocationRentalPrice = dailyLocationRentalPrice;
-	}
-
-	public int getShelfId() {
-		return shelfId;
 	}
 
 	public int getShelfCapacity() {
@@ -44,6 +36,11 @@ public class Shelf {
 
 	public void setDailyLocationRentalPrice(double dailyLocationRentalPrice) {
 		this.dailyLocationRentalPrice = dailyLocationRentalPrice;
+	}
+
+	@Override
+	public String toString() {
+		return "Shelf [Id=\"" + getEntityId() + "\", shelfCapacity=\"" + shelfCapacity + "\", productId=\"" + productId + "\", dailyLocationRentalPrice=\"" + dailyLocationRentalPrice + "\"]";
 	}
 
 }

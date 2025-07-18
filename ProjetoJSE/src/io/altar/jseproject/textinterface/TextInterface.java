@@ -1,9 +1,15 @@
 package io.altar.jseproject.textinterface;
 
+import java.util.Collection;
 import java.util.Scanner;
+
+import io.altar.jseproject.model.Product;
+import io.altar.jseproject.repositories.ProductRepository;
 
 public class TextInterface {
 	private static Scanner sc = new Scanner(System.in);
+	ProductRepository pr = ProductRepository.getInstance(); // chama uma instância de ProductRepository, usada para
+															// manipular produtos através da classe concreta
 
 	public void mainMenu() {
 		String op;
@@ -36,7 +42,6 @@ public class TextInterface {
 	}
 
 	public void listProductsMenu() {
-		// TODO Mostrar lista de produtos
 		String op;
 		do {
 			showListProductsMenu();
@@ -44,6 +49,7 @@ public class TextInterface {
 			switch (op) {
 			case "1":
 				System.out.println("Por implementar: criar novo produto");
+				createProduct();
 				break;
 			case "2":
 				System.out.println("Por implementar - Editar um produto existente");
@@ -65,12 +71,23 @@ public class TextInterface {
 
 	private void showListProductsMenu() {
 		System.out.println("Menu Listar Produtos");
+		showProductsList();
 		System.out.println("Por favor selecione uma das seguintes opções:");
 		System.out.println("1 - Criar novo produto");
 		System.out.println("2 - Editar um produto existente");
 		System.out.println("3 - Consultar o detalhe de um produto");
 		System.out.println("4 - Remover um produto");
 		System.out.println("5 - Voltar ao ecrã anterior");
+	}
+
+	private void showProductsList() {
+		Collection<Product> productsList = pr.getAllEntitiesByCollection();
+		if (productsList.size() == 0) {
+			System.out.println("Sem produtos a mostrar.");
+		}
+		for (Product p : productsList) {
+			System.out.println(p);
+		}
 	}
 
 	public void listShelvesMenu() {
@@ -109,6 +126,21 @@ public class TextInterface {
 		System.out.println("3 - Consultar o detalhe de uma prateleira");
 		System.out.println("4 - Remover uma prateleira");
 		System.out.println("5 - Voltar ao ecrã anterior");
+	}
+
+	private void createProduct() {
+		System.out.println("Preencha a seguinte informação");
+		System.out.println("Descrição do produto:");
+		String description = sc.nextLine();
+		System.out.println("PVP:");
+		double pvp = sc.nextDouble();
+		System.out.println("IVA:");
+		double iva = sc.nextDouble();
+		System.out.println("Desconto unitário:");
+		double discount = sc.nextDouble();
+		Product p = new Product(description, pvp, iva, discount);
+		pr.addEntity(p);
+		sc.nextLine();
 	}
 
 	public static void main(String[] args) {

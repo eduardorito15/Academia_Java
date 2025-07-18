@@ -3,9 +3,7 @@ package io.altar.jseproject.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
-	private static int countId;
-	private int productId;
+public class Product extends Entity_ {
 	private String productDescription;
 	private List<Integer> shelfIds = new ArrayList<Integer>();
 	private double unitDiscount;
@@ -13,15 +11,10 @@ public class Product {
 	private double productPVP;
 
 	public Product(String productDescription, double productPVP, double productIVA, double unitDiscount) {
-		this.productId = this.countId++;
 		this.productDescription = productDescription;
 		this.productPVP = productPVP;
 		this.productIVA = productIVA;
 		this.unitDiscount = unitDiscount;
-	}
-
-	public int getProductId() {
-		return productId;
 	}
 
 	public String getProductDescription() {
@@ -56,4 +49,10 @@ public class Product {
 		this.productPVP = productPVP;
 	}
 
+	@Override
+	public String toString() {
+		return "Product [Id=\"" + getEntityId() + "\", productDescription=\"" + productDescription + "\", productIVA=\"" + productIVA + "\", productPVP=\"" + productPVP + "\", shelfIds=\"" + shelfIds + "\", unitDiscount=\"" + unitDiscount + "\"]";
+	}
+
+	
 }
