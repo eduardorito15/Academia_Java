@@ -49,10 +49,15 @@ public class Product extends Entity_ {
 		this.productPVP = productPVP;
 	}
 
-	@Override
-	public String toString() {
-		return "Product [Id=\"" + getEntityId() + "\", productDescription=\"" + productDescription + "\", productIVA=\"" + productIVA + "\", productPVP=\"" + productPVP + "\", shelfIds=\"" + shelfIds + "\", unitDiscount=\"" + unitDiscount + "\"]";
+	public List<Integer> getShelfIds() {
+		return shelfIds;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Product [Id=\"" + getEntityId() + "\", productDescription=\"" + productDescription + "\", productIVA=\""
+				+ productIVA + "\", productPVP=\"" + productPVP + "\", shelfIds=\"" + shelfIds + "\", unitDiscount=\""
+				+ unitDiscount + "\"]";
+	}
+
 }

@@ -36,4 +36,8 @@ public abstract class EntityRepository<T extends Entity_> {
 	public void editEntity(T e) {
 		db.put(e.getEntityId(), e);
 	}
+
+	public int getSize() {
+		return db.size();
+	}
 }

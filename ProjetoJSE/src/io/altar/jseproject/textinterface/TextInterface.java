@@ -48,17 +48,16 @@ public class TextInterface {
 			op = sc.nextLine();
 			switch (op) {
 			case "1":
-				System.out.println("Por implementar: criar novo produto");
 				createProduct();
 				break;
 			case "2":
-				System.out.println("Por implementar - Editar um produto existente");
+				editProduct();
 				break;
 			case "3":
-				System.out.println("Por implementar - Consultar o detalhe de um produto");
+				viewProductDetails();
 				break;
 			case "4":
-				System.out.println("Por implementar - Remover um produto");
+				removeProduct();
 				break;
 			case "5":
 				break;
@@ -98,15 +97,19 @@ public class TextInterface {
 			op = sc.nextLine();
 			switch (op) {
 			case "1":
+				// TODO Criar nova prateleira
 				System.out.println("Por implementar - criar nova prateleira");
 				break;
 			case "2":
+				// TODO Editar uma prateleira existente
 				System.out.println("Por implementar - Editar uma prateleira existente");
 				break;
 			case "3":
+				// TODO Consultar o detalhe de uma prateleira
 				System.out.println("Por implementar - Consultar o detalhe de uma prateleira");
 				break;
 			case "4":
+				// TODO Remover uma prateleira
 				System.out.println("Por implementar - Remover uma prateleira");
 				break;
 			case "5":
@@ -141,6 +144,86 @@ public class TextInterface {
 		Product p = new Product(description, pvp, iva, discount);
 		pr.addEntity(p);
 		sc.nextLine();
+	}
+
+	private void editProduct() {
+		if (pr.getSize() == 0) {
+			System.out.println("A lista de produtos está vazia.");
+		} else {
+			System.out.println("Introduza o ID do produto que pretende editar.");
+			int id = sc.nextInt();
+			Product p = pr.getEntity(id);
+			if (p == null) {
+				System.out.println("Produto não encontrado.");
+			} else {
+				sc.nextLine();
+				System.out.println("Descrição do produto:");
+				String description = sc.nextLine();
+				if (!description.equals("")) {
+					p.setProductDescription(description);
+				}
+				System.out.println("PVP:");
+				double pvp = sc.nextDouble();
+				if (pvp != 0) {
+					p.setProductPVP(pvp);
+				}
+				System.out.println("IVA:");
+				double iva = sc.nextDouble();
+				if (iva != 0) {
+					p.setProductIVA(iva);
+				}
+				System.out.println("Desconto unitário:");
+				double discount = sc.nextDouble();
+				if (discount != 0) {
+					p.setUnitDiscount(discount);
+				}
+			}
+			pr.editEntity(p);
+			sc.nextLine();
+		}
+	}
+
+	private void removeProduct() {
+		if (pr.getSize() == 0) {
+			System.out.println("A lista de produtos está vazia.");
+			return;
+		}
+		System.out.println("Introduza o ID do produto que pretende remover.");
+		int id = sc.nextInt();
+		sc.nextLine();
+		Product p = pr.getEntity(id);
+		if (p == null) {
+			System.out.println("Produto não encontrado.");
+			return;
+		}
+		System.out.println("Tem a certeza que pretende remover " + p.getProductDescription() + "? (s/n)");
+		String r = sc.nextLine().trim().toLowerCase();
+		if (r.equals("s") || r.equals("sim")) {
+			pr.removeEntity(id);
+			System.out.println(p.getProductDescription() + " removido com sucesso.");
+		} else {
+			System.out.println("Opção inválida. Remoção cancelada.");
+		}
+	}
+
+	private void viewProductDetails() {
+		if (pr.getSize() == 0) {
+			System.out.println("A lista de produtos está vazia.");
+			return;
+		}
+		System.out.println("Introduza o ID do produto que pretende consultar.");
+		int id = sc.nextInt();
+		sc.nextLine();
+		Product p = pr.getEntity(id);
+		if (p == null) {
+			System.out.println("Produto não encontrado.");
+			return;
+		}
+		String details = String.format(
+				"Id do produto: %d\nDescrição: %s\nPVP: %.2f €\nIVA: %.2f %%\nDesconto unitário: %.2f %%\nPrateleiras: %s",
+				p.getEntityId(), p.getProductDescription(), p.getProductPVP(), p.getProductIVA(), p.getUnitDiscount(),
+				p.getShelfIds());
+		System.out.println(details);
 	}
 
 	public static void main(String[] args) {
