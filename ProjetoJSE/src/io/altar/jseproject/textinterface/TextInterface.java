@@ -4,12 +4,15 @@ import java.util.Collection;
 import java.util.Scanner;
 
 import io.altar.jseproject.model.Product;
+import io.altar.jseproject.model.Shelf;
 import io.altar.jseproject.repositories.ProductRepository;
+import io.altar.jseproject.repositories.ShelfRepository;
 
 public class TextInterface {
 	private static Scanner sc = new Scanner(System.in);
 	ProductRepository pr = ProductRepository.getInstance(); // chama uma instância de ProductRepository, usada para
 															// manipular produtos através da classe concreta
+	ShelfRepository sr = ShelfRepository.getInstance();
 
 	public void mainMenu() {
 		String op;
@@ -41,7 +44,7 @@ public class TextInterface {
 		System.out.println("3 - Sair");
 	}
 
-	public void listProductsMenu() {
+	private void listProductsMenu() {
 		String op;
 		do {
 			showListProductsMenu();
@@ -79,26 +82,14 @@ public class TextInterface {
 		System.out.println("5 - Voltar ao ecrã anterior");
 	}
 
-	private void showProductsList() {
-		Collection<Product> productsList = pr.getAllEntitiesByCollection();
-		if (productsList.size() == 0) {
-			System.out.println("Sem produtos a mostrar.");
-		}
-		for (Product p : productsList) {
-			System.out.println(p);
-		}
-	}
-
-	public void listShelvesMenu() {
-		// TODO Mostrar lista de prateleiras
+	private void listShelvesMenu() {
 		String op;
 		do {
 			showListShelvesMenu();
 			op = sc.nextLine();
 			switch (op) {
 			case "1":
-				// TODO Criar nova prateleira
-				System.out.println("Por implementar - criar nova prateleira");
+				createShelf();
 				break;
 			case "2":
 				// TODO Editar uma prateleira existente
@@ -109,26 +100,41 @@ public class TextInterface {
 				System.out.println("Por implementar - Consultar o detalhe de uma prateleira");
 				break;
 			case "4":
-				// TODO Remover uma prateleira
-				System.out.println("Por implementar - Remover uma prateleira");
+				removeShelf();
 				break;
 			case "5":
+				// TODO Adicionar produto à prateleira
+				addProductToShelf();
+				break;
+			case "6":
 				break;
 			default:
 				System.out.println("Por favor introduza uma opção válida.");
 				break;
 			}
-		} while (!op.equals("5"));
+		} while (!op.equals("6"));
 	}
 
 	private void showListShelvesMenu() {
 		System.out.println("Menu Listar Prateleiras");
+		showShelvesList();
 		System.out.println("Por favor selecione uma das seguintes opções:");
 		System.out.println("1 - Criar nova prateleira");
 		System.out.println("2 - Editar uma prateleira existente");
 		System.out.println("3 - Consultar o detalhe de uma prateleira");
 		System.out.println("4 - Remover uma prateleira");
-		System.out.println("5 - Voltar ao ecrã anterior");
+		System.out.println("5 - Adicionar produto à prateleira.");
+		System.out.println("6 - Voltar ao ecrã anterior");
+	}
+
+	private void showProductsList() {
+		Collection<Product> productsList = pr.getAllEntitiesByCollection();
+		if (productsList.size() == 0) {
+			System.out.println("Sem produtos a mostrar.");
+		}
+		for (Product p : productsList) {
+			System.out.println(p);
+		}
 	}
 
 	private void createProduct() {
@@ -224,6 +230,84 @@ public class TextInterface {
 				p.getEntityId(), p.getProductDescription(), p.getProductPVP(), p.getProductIVA(), p.getUnitDiscount(),
 				p.getShelfIds());
 		System.out.println(details);
+	}
+
+	private void showShelvesList() {
+		Collection<Shelf> shelvesList = sr.getAllEntitiesByCollection();
+		if (shelvesList.size() == 0) {
+			System.out.println("Sem prateleiras a mostrar.");
+			return;
+		}
+		for (Shelf s : shelvesList) {
+			System.out.println(s);
+		}
+	}
+
+	private void createShelf() {
+		System.out.println("Preencha a seguinte informação.");
+		System.out.println("Capacidade da prateleira:");
+		int capacity = sc.nextInt();
+		sc.nextLine();
+		System.out.println("Preço de aluguer:");
+		double price = sc.nextDouble();
+		sc.nextLine();
+		Shelf s = new Shelf();
+		s.setShelfCapacity(capacity);
+		s.setDailyLocationRentalPrice(price);
+		sr.addEntity(s);
+	}
+
+	private void removeShelf() {
+		if (sr.getSize() == 0) {
+			System.out.println("A lista de prateleiras está vazia.");
+			return;
+		}
+		System.out.println("Introduza o ID da prateleira que pretende remover.");
+		int id = sc.nextInt();
+		sc.nextLine();
+		Shelf s = sr.getEntity(id);
+		if (s == null) {
+			System.out.println("Prateleira não encontrada.");
+			return;
+		}
+		System.out.println("Tem a certeza que pretende remover a prateleira " + s.getEntityId() + "? (s/n)");
+		String r = sc.nextLine().trim().toLowerCase();
+		if (r.equals("s") || r.equals("sim")) {
+			removeProductFromShelf(id);
+			sr.removeEntity(id);
+			System.out.println("Prateleira " + s.getEntityId() + " removida com sucesso.");
+		} else {
+			System.out.println("Opção inválida. Remoção cancelada.");
+		}
+	}
+
+	private void removeProductFromShelf(int id) {
+		Shelf s = sr.getEntity(id);
+		if (s.getProductId() != -1) {
+			Product p = pr.getEntity(s.getProductId());
+			p.removeShelfId(id);
+		}
+	}
+
+	private void addProductToShelf() {
+		System.out.println("Digite o id da prateleira:");
+		int shelfId = sc.nextInt();
+		sc.nextLine();
+		Shelf s = sr.getEntity(shelfId);
+		if (s == null) {
+			System.out.println("Essa prateleira não existe.");
+			return;
+		}
+		System.out.println("Introduza o id do produto a adicionar:");
+		int productId = sc.nextInt();
+		sc.nextLine();
+		Product p = pr.getEntity(productId);
+		if (p == null) {
+			System.out.println("Esse produto não existe.");
+			return;
+		}
+		s.setProductId(productId);
+		p.addShelfId(shelfId);
 	}
 
 	public static void main(String[] args) {

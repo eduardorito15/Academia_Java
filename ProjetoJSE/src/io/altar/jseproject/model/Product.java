@@ -53,6 +53,14 @@ public class Product extends Entity_ {
 		return shelfIds;
 	}
 
+	public void addShelfId(int id) {
+		shelfIds.add(id);
+	}
+
+	public void removeShelfId(int id) {
+		shelfIds.remove(id);
+	}
+
 	@Override
 	public String toString() {
 		return "Product [Id=\"" + getEntityId() + "\", productDescription=\"" + productDescription + "\", productIVA=\""
