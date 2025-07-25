@@ -1,28 +1,40 @@
 package io.altar.jseproject.textinterface;
 
 import io.altar.jseproject.textinterface.states.CreateProductState;
+import io.altar.jseproject.textinterface.states.CreateShelfState;
+import io.altar.jseproject.textinterface.states.EditProductState;
 import io.altar.jseproject.textinterface.states.MainMenuState;
 import io.altar.jseproject.textinterface.states.ProductState;
+import io.altar.jseproject.textinterface.states.RemoveProductState;
+import io.altar.jseproject.textinterface.states.RemoveShelfState;
 import io.altar.jseproject.textinterface.states.ShelfState;
 import io.altar.jseproject.textinterface.states.State;
+import io.altar.jseproject.textinterface.states.ViewProductDetailsState;
 
 public class TextInterfaceStateMachine {
-	private State[] states = { new MainMenuState(),
-			new ProductState(),
-			new ShelfState(),
-			new CreateProductState() };
-	private int[][] transitions = { { 1, 2 }, // state 0
-			{ 3, 1, 1, 1, 0 }, // state 1
-			{ 2, 2, 2, 2, 2, 0 }, // state 2
-			{1} // state 3 - CreateProductState()
-			};
+	private State[] states = { new MainMenuState(), new ProductState(), new ShelfState(), new CreateProductState(),
+			new EditProductState(), new ViewProductDetailsState(), new RemoveProductState(), new CreateShelfState(),
+			new RemoveShelfState() };
+	private int[][] transitions = { { 1, 2 }, // state 0 MainMenuState()
+			{ 3, 4, 5, 6, 0 }, // state 1 ProductState()
+			{ 7, 8, 2, 2, 2, 0 }, // state 2 ShelfState()
+			{ 1 }, // state 3 CreateProductState()
+			{ 1 }, // state 4 EditProductState()
+			{ 1 }, // state 5 ViewProductDetailsState()
+			{ 1 }, // state 6 RemoveProductState()
+			{ 2 }, // state 7 CreateShelfState()
+			{ 2 } // state 8 RemoveShelfState()
+	};
 	private int current = 0;
-/* No array de arrays transitions, o array principal, que apenas possui os índices 0, 1 e 2,  representa os três menus possíveis: 
- * 0 - menu principal;
- * 1 - menu produtos;
- * 2 - menu prateleiras.
- * Cada um dos arrays internos contém as várias transições possíveis, cujo valor numérico corresponde à posição (index) em states[]. Por exemplo, new CreateProductState() encontra-se no index 3.
- */
+
+	/*
+	 * No array de arrays transitions, o array principal, que apenas possui os
+	 * ï¿½ndices 0, 1 e 2, representa os trï¿½s menus possï¿½veis: 0 - menu principal; 1 -
+	 * menu produtos; 2 - menu prateleiras. Cada um dos arrays internos contï¿½m as
+	 * vï¿½rias transiï¿½ï¿½es possï¿½veis, cujo valor numï¿½rico corresponde ï¿½ posiï¿½ï¿½o
+	 * (index) em states[]. Por exemplo, new CreateProductState() encontra-se no
+	 * index 3.
+	 */
 	public void start() {
 		while (true) {
 			int option = states[current].start();
