@@ -18,13 +18,13 @@ public class ShelfState extends State {
 	private void showListShelvesMenu() {
 		System.out.println("Menu Listar Prateleiras");
 		showShelvesList();
-		System.out.println("Por favor selecione uma das seguintes opções:");
+		System.out.println("Por favor selecione uma das seguintes opï¿½ï¿½es:");
 		System.out.println("1 - Criar nova prateleira");
-		System.out.println("2 - Editar uma prateleira existente");
+		System.out.println("2 - Remover prateleira");
 		System.out.println("3 - Consultar o detalhe de uma prateleira");
 		System.out.println("4 - Remover uma prateleira");
-		System.out.println("5 - Adicionar produto à prateleira.");
-		System.out.println("6 - Voltar ao ecrã anterior");
+		System.out.println("5 - Adicionar produto ï¿½ prateleira.");
+		System.out.println("6 - Voltar ao ecrï¿½ anterior");
 	}
 
 	private void showShelvesList() {
