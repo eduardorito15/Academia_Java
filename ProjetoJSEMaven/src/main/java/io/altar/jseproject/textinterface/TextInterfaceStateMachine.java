@@ -1,5 +1,6 @@
 package io.altar.jseproject.textinterface;
 
+import io.altar.jseproject.textinterface.states.AddProductToShelfState;
 import io.altar.jseproject.textinterface.states.CreateProductState;
 import io.altar.jseproject.textinterface.states.CreateShelfState;
 import io.altar.jseproject.textinterface.states.EditProductState;
@@ -14,16 +15,17 @@ import io.altar.jseproject.textinterface.states.ViewProductDetailsState;
 public class TextInterfaceStateMachine {
 	private State[] states = { new MainMenuState(), new ProductState(), new ShelfState(), new CreateProductState(),
 			new EditProductState(), new ViewProductDetailsState(), new RemoveProductState(), new CreateShelfState(),
-			new RemoveShelfState() };
+			new RemoveShelfState(), new AddProductToShelfState() };
 	private int[][] transitions = { { 1, 2 }, // state 0 MainMenuState()
 			{ 3, 4, 5, 6, 0 }, // state 1 ProductState()
-			{ 7, 8, 2, 2, 2, 0 }, // state 2 ShelfState()
+			{ 7, 8, 9, 0}, // state 2 ShelfState()
 			{ 1 }, // state 3 CreateProductState()
 			{ 1 }, // state 4 EditProductState()
 			{ 1 }, // state 5 ViewProductDetailsState()
 			{ 1 }, // state 6 RemoveProductState()
 			{ 2 }, // state 7 CreateShelfState()
-			{ 2 } // state 8 RemoveShelfState()
+			{ 2 }, // state 8 RemoveShelfState()
+			{2} // state 9 AddProductToShelf()
 	};
 	private int current = 0;
 

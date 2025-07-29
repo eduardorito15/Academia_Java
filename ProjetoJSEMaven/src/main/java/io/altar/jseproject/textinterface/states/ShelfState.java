@@ -21,10 +21,8 @@ public class ShelfState extends State {
 		System.out.println("Por favor selecione uma das seguintes op��es:");
 		System.out.println("1 - Criar nova prateleira");
 		System.out.println("2 - Remover prateleira");
-		System.out.println("3 - Consultar o detalhe de uma prateleira");
-		System.out.println("4 - Remover uma prateleira");
-		System.out.println("5 - Adicionar produto � prateleira.");
-		System.out.println("6 - Voltar ao ecr� anterior");
+		System.out.println("3 - Adicionar produto � prateleira.");
+		System.out.println("4 - voltar ao ecrã anterior");
 	}
 
 	private void showShelvesList() {
@@ -37,6 +35,5 @@ public class ShelfState extends State {
 			System.out.println(s);
 		}
 	}
-
 
 }

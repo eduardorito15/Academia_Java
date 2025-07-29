@@ -10,6 +10,10 @@ public class Product extends Entity_ {
 	private double productIVA;
 	private double productPVP;
 
+	public Product() {
+
+	}
+
 	public Product(String productDescription, double productPVP, double productIVA, double unitDiscount) {
 		this.productDescription = productDescription;
 		this.productPVP = productPVP;

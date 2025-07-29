@@ -8,14 +8,14 @@ public class CreateProductState extends State {
 
 	@Override
 	public int start() {
-		System.out.println("Preencha a seguinte informação");
-		System.out.println("Descrição do produto:");
+		System.out.println("Preencha a seguinte informaï¿½ï¿½o");
+		System.out.println("Descriï¿½ï¿½o do produto:");
 		String description = sc.nextLine();
 		System.out.println("PVP:");
 		double pvp = sc.nextDouble();
 		System.out.println("IVA:");
 		double iva = sc.nextDouble();
-		System.out.println("Desconto unitário:");
+		System.out.println("Desconto unitï¿½rio:");
 		double discount = sc.nextDouble();
 		Product p = new Product(description, pvp, iva, discount);
 		pr.addEntity(p);

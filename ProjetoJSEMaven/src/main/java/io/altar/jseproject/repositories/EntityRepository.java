@@ -12,6 +12,9 @@ public abstract class EntityRepository<T extends Entity_> {
 	private int currentId = 0;
 
 	public int addEntity(T e) {
+		if (e.getEntityId() < 0) {
+			throw new IllegalArgumentException("O campo ID deve ser null ao criar uma nova entidade");
+		}
 		e.setEntityId(currentId);
 		db.put(currentId, e);
 		return currentId++;
