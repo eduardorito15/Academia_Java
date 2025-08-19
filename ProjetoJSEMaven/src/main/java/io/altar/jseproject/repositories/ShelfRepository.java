@@ -1,16 +1,26 @@
 package io.altar.jseproject.repositories;
 
+import javax.enterprise.context.ApplicationScoped;
+
 import io.altar.jseproject.model.Shelf;
 import io.altar.jseproject.repositories.interfaces.ShelfInterface;
 
+@ApplicationScoped
 public class ShelfRepository extends EntityRepository<Shelf> implements ShelfInterface {
-	private static final ShelfRepository INSTANCE = new ShelfRepository();
 
-	private ShelfRepository() {
-
+	@Override
+	protected Class<Shelf> getEntityClass() {
+		return Shelf.class;
 	}
 
-	public static ShelfRepository getInstance() {
-		return INSTANCE;
+	@Override
+	protected String getAllEntitiesQuery() {
+return Shelf.GET_ALL;
 	}
+
+	@Override
+	protected String getCountEntitiesQuery() {
+return Shelf.GET_COUNT;
+	}
+
 }

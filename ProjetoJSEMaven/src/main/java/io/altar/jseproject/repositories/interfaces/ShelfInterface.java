@@ -1,8 +1,6 @@
 package io.altar.jseproject.repositories.interfaces;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 import io.altar.jseproject.model.Shelf;
 
@@ -13,9 +11,7 @@ public interface ShelfInterface {
 
 	public Shelf getEntity(int entityId);
 
-	public Set<Map.Entry<Integer, Shelf>> getAllEntities();
-
-	public Collection<Shelf> getAllEntitiesByCollection();
+	public Collection<Shelf> getAllEntities();
 
 	public void editEntity(Shelf e);
 

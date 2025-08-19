@@ -1,8 +1,6 @@
 package io.altar.jseproject.repositories.interfaces;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 import io.altar.jseproject.model.Product;
 
@@ -13,9 +11,7 @@ public interface ProductInterface {
 
 	public Product getEntity(int entityId);
 
-	public Set<Map.Entry<Integer, Product>> getAllEntities();
-
-	public Collection<Product> getAllEntitiesByCollection();
+	public Collection<Product> getAllEntities();
 
 	public void editEntity(Product e);
 

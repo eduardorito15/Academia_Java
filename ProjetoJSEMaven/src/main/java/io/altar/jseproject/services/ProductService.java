@@ -1,12 +1,15 @@
 package io.altar.jseproject.services;
 
-import java.util.Collection;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import io.altar.jseproject.model.Product;
 import io.altar.jseproject.repositories.ProductRepository;
 
+@ApplicationScoped
 public class ProductService extends EntityService {
-	private ProductRepository pr = ProductRepository.getInstance();
+	@Inject
+	private ProductRepository pr;
 
 	public int addEntity(Product entity) {
 		return pr.addEntity(entity);
@@ -18,10 +21,6 @@ public class ProductService extends EntityService {
 
 	public Product getEntity(int entityId) {
 		return pr.getEntity(entityId);
-	}
-
-	public Collection<Product> getAllEntitiesByCollection() {
-		return pr.getAllEntitiesByCollection();
 	}
 
 	public void editEntity(Product entity) {

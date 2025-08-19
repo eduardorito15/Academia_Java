@@ -1,12 +1,15 @@
 package io.altar.jseproject.services;
 
-import java.util.Collection;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import io.altar.jseproject.model.Shelf;
 import io.altar.jseproject.repositories.ShelfRepository;
 
+@ApplicationScoped
 public class ShelfService extends EntityService {
-	private ShelfRepository sr = ShelfRepository.getInstance();
+	@Inject
+	private ShelfRepository sr;
 
 	public int addEntity(Shelf entity) {
 		return sr.addEntity(entity);
@@ -18,10 +21,6 @@ public class ShelfService extends EntityService {
 
 	public Shelf getEntity(int entityId) {
 		return sr.getEntity(entityId);
-	}
-
-	public Collection<Shelf> getAllEntitiesByCollection() {
-		return sr.getAllEntitiesByCollection();
 	}
 
 	public void editEntity(Shelf entity) {

@@ -1,9 +1,20 @@
 package io.altar.jseproject.model;
 
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+
+@Entity
+@NamedQueries({
+	@NamedQuery(name=Shelf.GET_ALL, query="SELECT s FROM Shelf s"),
+	@NamedQuery(name=Shelf.GET_COUNT, query="SELECT COUNT(s.id) FROM Shelf s")
+})
 public class Shelf extends Entity_ {
 	private int shelfCapacity;
 	private int productId = -1;
 	private double dailyLocationRentalPrice;
+	public static final String GET_ALL = "getAll";
+	public static final String GET_COUNT = "getCount";
 
 	public Shelf() {
 
