@@ -19,6 +19,7 @@ import io.altar.jseproject.services.ProductService;
 @Path("products")
 @RequestScoped
 public class ProductController {
+	//FIXME Change ShelfService for CDI injection
 	ProductService ps = new ProductService();
 	@Context
 	protected UriInfo context;
@@ -37,6 +38,7 @@ public class ProductController {
 		return ps.addEntity(p);
 	}
 
+	//FIXME Add @Produces annotation
 	@GET
 	@Path("{entityId}")
 	public Product getEntity(@PathParam("entityId") int entityId) {

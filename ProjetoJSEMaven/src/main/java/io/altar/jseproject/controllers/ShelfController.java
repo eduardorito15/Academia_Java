@@ -19,6 +19,7 @@ import io.altar.jseproject.services.ShelfService;
 @Path("shelves")
 @RequestScoped
 public class ShelfController {
+	//FIXME Change ShelfService for CDI injection
 	ShelfService ss = new ShelfService();
 	@Context
 	protected UriInfo context;

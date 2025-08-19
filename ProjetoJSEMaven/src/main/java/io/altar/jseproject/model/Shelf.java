@@ -11,6 +11,7 @@ import javax.persistence.NamedQuery;
 })
 public class Shelf extends Entity_ {
 	private int shelfCapacity;
+	//FIXME Change int productId to Product product
 	private int productId = -1;
 	private double dailyLocationRentalPrice;
 	public static final String GET_ALL_SHELVES = "getAllShelves";

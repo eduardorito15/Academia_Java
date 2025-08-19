@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 })
 public class Product extends Entity_ {
 	private String productDescription;
+	//FIXME Change List<Integer> shelfIds to List<Shelf>
 	@ElementCollection
 	private List<Integer> shelfIds = new ArrayList<Integer>();
 	private double unitDiscount;
