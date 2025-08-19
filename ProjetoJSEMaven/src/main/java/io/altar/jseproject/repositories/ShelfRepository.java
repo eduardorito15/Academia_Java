@@ -15,12 +15,12 @@ public class ShelfRepository extends EntityRepository<Shelf> implements ShelfInt
 
 	@Override
 	protected String getAllEntitiesQuery() {
-return Shelf.GET_ALL;
+return Shelf.GET_ALL_SHELVES;
 	}
 
 	@Override
 	protected String getCountEntitiesQuery() {
-return Shelf.GET_COUNT;
+return Shelf.GET_COUNT_SHELVES;
 	}
 
 }

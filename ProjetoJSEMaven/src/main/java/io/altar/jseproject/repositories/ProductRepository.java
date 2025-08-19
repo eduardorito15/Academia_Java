@@ -7,9 +7,6 @@ import io.altar.jseproject.repositories.interfaces.ProductInterface;
 
 @ApplicationScoped
 public class ProductRepository extends EntityRepository<Product> implements ProductInterface {
-	private ProductRepository() {
-
-	}
 
 	@Override
 	protected Class<Product> getEntityClass() {
@@ -18,11 +15,11 @@ public class ProductRepository extends EntityRepository<Product> implements Prod
 
 	@Override
 	protected String getAllEntitiesQuery() {
-		return Product.GET_ALL;
+		return Product.GET_ALL_PRODUCTS;
 	}
 
 	@Override
 	protected String getCountEntitiesQuery() {
-		return Product.GET_COUNT;
+		return Product.GET_COUNT_PRODUCTS;
 	}
 }

@@ -1,25 +1,26 @@
 package io.altar.jseproject.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name=Product.GET_ALL, query="SELECT p FROM Product p"),
-	@NamedQuery(name=Product.GET_COUNT, query="SELECT COUNT(p.id) FROM Product p")
+	@NamedQuery(name=Product.GET_ALL_PRODUCTS, query="SELECT p FROM Product p"),
+	@NamedQuery(name=Product.GET_COUNT_PRODUCTS, query="SELECT COUNT(p.id) FROM Product p")
 })
 public class Product extends Entity_ {
 	private String productDescription;
-	private List<Integer> shelfIds = new ArrayList<Integer>();
+	@OneToMany
+	private List<Integer> shelfIds;
 	private double unitDiscount;
 	private double productIVA;
 	private double productPVP;
-	public static final String GET_ALL = "getAll";
-	public static final String GET_COUNT = "getCount";
+	public static final String GET_ALL_PRODUCTS = "getAllProducts";
+	public static final String GET_COUNT_PRODUCTS = "getCountProducts";
 
 	public Product() {
 
