@@ -1,11 +1,12 @@
 package io.altar.jseproject.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
@@ -14,8 +15,8 @@ import javax.persistence.OneToMany;
 })
 public class Product extends Entity_ {
 	private String productDescription;
-	@OneToMany
-	private List<Integer> shelfIds;
+	@ElementCollection
+	private List<Integer> shelfIds = new ArrayList<Integer>();
 	private double unitDiscount;
 	private double productIVA;
 	private double productPVP;
