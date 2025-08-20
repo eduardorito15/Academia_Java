@@ -1,6 +1,7 @@
 package io.altar.jseproject.controllers;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,8 +20,8 @@ import io.altar.jseproject.services.ShelfService;
 @Path("shelves")
 @RequestScoped
 public class ShelfController {
-	//FIXME Change ShelfService for CDI injection
-	ShelfService ss = new ShelfService();
+	@Inject
+	ShelfService ss;
 	@Context
 	protected UriInfo context;
 
