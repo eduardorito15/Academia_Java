@@ -15,9 +15,8 @@ import javax.persistence.NamedQuery;
 })
 public class Product extends Entity_ {
 	private String productDescription;
-	//FIXME Change List<Integer> shelfIds to List<Shelf>
 	@ElementCollection
-	private List<Integer> shelfIds = new ArrayList<Integer>();
+	private List<Shelf> shelfList = new ArrayList<Shelf>();
 	private double unitDiscount;
 	private double productIVA;
 	private double productPVP;
@@ -67,22 +66,22 @@ public class Product extends Entity_ {
 		this.productPVP = productPVP;
 	}
 
-	public List<Integer> getShelfIds() {
-		return shelfIds;
+	public List<Shelf> getShelfList() {
+		return shelfList;
 	}
 
-	public void addShelfId(int id) {
-		shelfIds.add(id);
+	public void addShelfToList(Shelf shelf) {
+		shelfList.add(shelf);
 	}
 
-	public void removeShelfId(int id) {
-		shelfIds.remove(id);
+	public void removeShelfFromList(Shelf shelf) {
+		shelfList.remove(shelf);
 	}
 
 	@Override
 	public String toString() {
 		return "Product [Id=\"" + getEntityId() + "\", productDescription=\"" + productDescription + "\", productIVA=\""
-				+ productIVA + "\", productPVP=\"" + productPVP + "\", shelfIds=\"" + shelfIds + "\", unitDiscount=\""
+				+ productIVA + "\", productPVP=\"" + productPVP + "\", shelfIds=\"" + shelfList + "\", unitDiscount=\""
 				+ unitDiscount + "\"]";
 	}
 

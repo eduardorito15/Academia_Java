@@ -38,9 +38,9 @@ public class ProductController {
 		return ps.addEntity(p);
 	}
 
-	//FIXME Add @Produces annotation
 	@GET
 	@Path("{entityId}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Product getEntity(@PathParam("entityId") int entityId) {
 		return ps.getEntity(entityId);
 	}

@@ -1,6 +1,7 @@
 package io.altar.jseproject.model;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -11,8 +12,8 @@ import javax.persistence.NamedQuery;
 })
 public class Shelf extends Entity_ {
 	private int shelfCapacity;
-	//FIXME Change int productId to Product product
-	private int productId = -1;
+	@ManyToOne
+	private Product product;
 	private double dailyLocationRentalPrice;
 	public static final String GET_ALL_SHELVES = "getAllShelves";
 	public static final String GET_COUNT_SHELVES = "getCountShelves";
@@ -34,12 +35,12 @@ public class Shelf extends Entity_ {
 		this.shelfCapacity = shelfCapacity;
 	}
 
-	public int getProductId() {
-		return productId;
+	public Product getProduct() {
+		return product;
 	}
 
-	public void setProductId(int productId) {
-		this.productId = productId;
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public double getDailyLocationRentalPrice() {
@@ -52,7 +53,7 @@ public class Shelf extends Entity_ {
 
 	@Override
 	public String toString() {
-		return "Shelf [Id=\"" + getEntityId() + "\", shelfCapacity=\"" + shelfCapacity + "\", productId=\"" + productId + "\", dailyLocationRentalPrice=\"" + dailyLocationRentalPrice + "\"]";
+		return "Shelf [Id=\"" + getEntityId() + "\", shelfCapacity=\"" + shelfCapacity + "\", productId=\"" + product.getEntityId() + "\", dailyLocationRentalPrice=\"" + dailyLocationRentalPrice + "\"]";
 	}
 
 }
